@@ -1,0 +1,945 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="hexo静态博客," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="1. 使用EPEL安装nodeJs  EPEL（Extra Packages for Enterprise Linux）企业版Linux的额外软件包，是Fedora小组维护的一个软件仓库项目，为RHEL/CentOS提供他们默认不提供的软件包。因为Hexo是跑在nodejs环境下的,所以要装nodejs环境  首先查看当前系统下是否安装了nodeJs1$ node -v 如果没有安装则继续下面的步">
+<meta name="keywords" content="hexo静态博客">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CentOS+Hexo+Git搭建静态博客">
+<meta property="og:url" content="http://yoursite.com/2017/05/10/CentOS-Hexo-Git搭建静态博客/index.html">
+<meta property="og:site_name" content="九月.">
+<meta property="og:description" content="1. 使用EPEL安装nodeJs  EPEL（Extra Packages for Enterprise Linux）企业版Linux的额外软件包，是Fedora小组维护的一个软件仓库项目，为RHEL/CentOS提供他们默认不提供的软件包。因为Hexo是跑在nodejs环境下的,所以要装nodejs环境  首先查看当前系统下是否安装了nodeJs1$ node -v 如果没有安装则继续下面的步">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-10-19T08:48:43.103Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="CentOS+Hexo+Git搭建静态博客">
+<meta name="twitter:description" content="1. 使用EPEL安装nodeJs  EPEL（Extra Packages for Enterprise Linux）企业版Linux的额外软件包，是Fedora小组维护的一个软件仓库项目，为RHEL/CentOS提供他们默认不提供的软件包。因为Hexo是跑在nodejs环境下的,所以要装nodejs环境  首先查看当前系统下是否安装了nodeJs1$ node -v 如果没有安装则继续下面的步">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/05/10/CentOS-Hexo-Git搭建静态博客/"/>
+
+
+
+
+
+  <title>CentOS+Hexo+Git搭建静态博客 | 九月.</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?2d6a60a053444b6293cec889cd5a6784";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">九月.</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">just a smelly programmer.</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/05/10/CentOS-Hexo-Git搭建静态博客/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="九月.">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="九月.">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">CentOS+Hexo+Git搭建静态博客</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-10T16:27:25+08:00">
+                2017-05-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-comment-o"></i>
+              </span>
+              
+                <a href="/2017/05/10/CentOS-Hexo-Git搭建静态博客/#SOHUCS" itemprop="discussionUrl">
+                  <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="2017/05/10/CentOS-Hexo-Git搭建静态博客/" itemprop="commentsCount"></span>
+                </a>
+              
+            
+          
+
+          
+          
+             <span id="/2017/05/10/CentOS-Hexo-Git搭建静态博客/" class="leancloud_visitors" data-flag-title="CentOS+Hexo+Git搭建静态博客">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h4 id="1-使用EPEL安装nodeJs"><a href="#1-使用EPEL安装nodeJs" class="headerlink" title="1. 使用EPEL安装nodeJs"></a>1. 使用EPEL安装nodeJs</h4><blockquote>
+<p> EPEL（Extra Packages for Enterprise Linux）企业版Linux的额外软件包，是Fedora小组维护的一个软件仓库项目，为RHEL/CentOS提供他们默认不提供的软件包。<br>因为Hexo是跑在nodejs环境下的,所以要装nodejs环境</p>
+</blockquote>
+<p>首先查看当前系统下是否安装了nodeJs<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ node -v</div></pre></td></tr></table></figure></p>
+<p>如果没有安装则继续下面的步骤<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># 先确认系统是否已经安装了epel-release包：</div><div class="line">$ yum info epel-release</div></pre></td></tr></table></figure></p>
+<p>如果有输出有关epel-release的已安装信息，则说明已经安装，如果提示没有安装或可安装，则安装<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ sudo yum install epel-release</div></pre></td></tr></table></figure></p>
+<p>安装完后，就可以使用yum命令安装nodejs了，安装的一般会是较新的版本，并且会将npm作为依赖包一起安装<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ sudo yum install nodejs</div></pre></td></tr></table></figure></p>
+<p>安装完成后，验证是否正确的安装，node -v，如果输出版本信息，说明成功安装<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ node -v</div></pre></td></tr></table></figure></p>
+<h4 id="2-安装git"><a href="#2-安装git" class="headerlink" title="2.安装git"></a>2.安装git</h4><p>查看系统是否安装了git<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ git --version</div></pre></td></tr></table></figure></p>
+<p>如果没有版本信息,则继续下面的步骤<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ yum install git</div></pre></td></tr></table></figure></p>
+<p>然后使用yum –version命令查看是否有版本信息,有版本信息则安装成功</p>
+<p>然后配置一下全局的git用户信息,先查看配置信息<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ git config --list</div></pre></td></tr></table></figure></p>
+<p>如果没有配置过,则<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$  git config --global user.name &quot;输入你的用户名&quot;</div><div class="line">$  git config --global user.email &quot;输入你的邮箱&quot;</div></pre></td></tr></table></figure></p>
+<h4 id="3-安装Hexo"><a href="#3-安装Hexo" class="headerlink" title="3.安装Hexo"></a>3.安装Hexo</h4><p>终于到了安装Hexo的一步了<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ npm install hexo-cli -g</div></pre></td></tr></table></figure></p>
+<p>一个命令搞定,然后建立博客目录<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo init &quot;blogPath&quot;(你想要存放博客环境的路径)</div></pre></td></tr></table></figure></p>
+<p>现在进入博客目录<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ cd blogPath</div></pre></td></tr></table></figure></p>
+<p>然后安装server服务跑起来看一下是否成功</p>
+<p>在Hexo 3.0 后server被单独出来了，需要安装server，安装的命令如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ npm install hexo-server --save</div></pre></td></tr></table></figure></p>
+<p>安装此server后执行<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo server</div></pre></td></tr></table></figure></p>
+<p>或者 ‘hexo s’ 这是上面命令的缩写,这个命令主要是用于让Hexo在本地运行一个虚拟服务器环境,可以看到修改的效果</p>
+<p>如果你是在远程的服务器在浏览器访问<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">http://你的服务器IP:4000</div></pre></td></tr></table></figure></p>
+<p>如果你是本地,则访问<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">http://localhost:4000</div></pre></td></tr></table></figure></p>
+<p>页面显示出来则成功建立了一个博客</p>
+<h4 id="4-配置Hexo"><a href="#4-配置Hexo" class="headerlink" title="4.配置Hexo"></a>4.配置Hexo</h4><p>Hexo的配置文件是在博客目录下的 _config.yml文件,在博客目录下执行<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ vim _config.yml</div></pre></td></tr></table></figure></p>
+<p>最上面呈现的是博客的基本信息<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">title: #网站标题</div><div class="line">subtitle: #子标题</div><div class="line">description: #博客简洁</div><div class="line">author: #博客作者</div><div class="line">language: zh-Hans #使用的语言环境 zh-Hans为中文</div><div class="line">email: #邮箱</div><div class="line">keywords: #关键字</div></pre></td></tr></table></figure></p>
+<p>关键点在于后面的这些信息,一会有用到,先混个脸熟<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">...</div><div class="line">theme: #使用模板</div><div class="line">...</div><div class="line">deploy: #部署信息配置</div><div class="line">type: git #部署类型</div><div class="line">repository: xxxx #你的git仓库地址</div><div class="line">branch: master #推送的分支</div></pre></td></tr></table></figure></p>
+<h4 id="5-创建Repository"><a href="#5-创建Repository" class="headerlink" title="5.创建Repository"></a>5.创建Repository</h4><h5 id="登录github-创建一个新的Repository"><a href="#登录github-创建一个新的Repository" class="headerlink" title="登录github,创建一个新的Repository"></a>登录github,创建一个新的Repository</h5><p>命名规则为’你的github用户名.github.io’ 一定要按照这个规则命名</p>
+<p>创建成功后copy这个仓库的SSH地址<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">大致长这个样子</div><div class="line">git@github.com:用户名/用户名.github.io.git</div></pre></td></tr></table></figure></p>
+<p>然后编辑上面说到的Hexo配置文件,找到部署信息配置,在repository后面加上刚刚复制的地址(冒号后面记得加空格),其他字段按照上面的示例配置.</p>
+<p>然后保存配置文件<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">esc键 然后直接输入:wq 就保存了</div></pre></td></tr></table></figure></p>
+<h5 id="设置SSH-key"><a href="#设置SSH-key" class="headerlink" title="设置SSH key"></a>设置SSH key</h5><p>检验是否已存在key</p>
+<p>分别执行命令<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ cd ~</div><div class="line">$ cd  .ssh</div></pre></td></tr></table></figure></p>
+<p>再执行命令 ls 查看是有已有key文件,一般存在key的话都会显示id_rsa.pub 和 id_dsa.pub这两个文件,没有key什么都不会显示</p>
+<p>添加一个 SSH key<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># email为你的github登录邮箱</div><div class="line">$ ssh-keygen -t rsa -C &quot;your_email@mail.com&quot;</div></pre></td></tr></table></figure></p>
+<p>会提示你指定文件名,如果什么都不输入,直接回车,会默认使用id_rsa.pub为ssh key文件名</p>
+<p>回车之后,需要输入两次密码,这个密码是你push文件的时候要输入的密码，而不是github的密码,如果不打算使用密码,直接回车就好,然后就会看到ssh key添加成功</p>
+<p>然后使用命令显示ssh key内容<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ cat /roor/.ssh/id_rsa.pub</div></pre></td></tr></table></figure></p>
+<p>会出来一大坨东西,直接全部复制,然后到你的github账户</p>
+<p>点击右上角你的头像,选择’settings’,选择左边的’SSH and GPG keys’ 在SSH keys区域,选择New SSH key,然后把刚刚复制的粘贴进,保存,就OK了</p>
+<p>回到命令行,输入下面命令,测试是否添加正确</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ ssh -T git@github.com</div></pre></td></tr></table></figure>
+<p>如果成功,他会显示<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Hi xxx! You&apos;ve successfully authenticated, but GitHub does not provide shell access.</div></pre></td></tr></table></figure></p>
+<p>到这里,git上的所有操作,基本结束.</p>
+<h4 id="6-部署到github"><a href="#6-部署到github" class="headerlink" title="6.部署到github"></a>6.部署到github</h4><p>Hexo提供了两个命令,先使用generate生成静态文件,然后使用deploy命令,他会根据配置文件里,我们填入的git信息,执行push</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ hexo generate</div><div class="line">$ hexo deploy</div></pre></td></tr></table></figure>
+<p>实际使用中每次都要写两个命令太麻烦了,所以Hexo提供了缩写命令’g -d’ 生成后,直接推送到git</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo g -d</div></pre></td></tr></table></figure>
+<p>等待命令执行完毕后,可以查看代码是否已提交到github上,然后在浏览器输入’你的用户名.github.io’就可以访问了</p>
+<h4 id="7-使用Hexo写博客"><a href="#7-使用Hexo写博客" class="headerlink" title="7.使用Hexo写博客"></a>7.使用Hexo写博客</h4><h5 id="删除博客"><a href="#删除博客" class="headerlink" title="删除博客"></a>删除博客</h5><p>默认Hexo会有一片hello,word的博客示例<br>正好拿来练手</p>
+<p>删除博客需要进入博客根目录/source/_posts目录中删除文件后执行下面的命令就好了</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo clean</div></pre></td></tr></table></figure>
+<h5 id="新建博客"><a href="#新建博客" class="headerlink" title="新建博客"></a>新建博客</h5><p>在博客目录下,使用以下命令,即可在/source/_posts目录下新建一个.md文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo new 文章名</div></pre></td></tr></table></figure>
+<p>找到这个文件,对他进行编辑就可以了.</p>
+<h4 id="8-使用Hexo主题"><a href="#8-使用Hexo主题" class="headerlink" title="8. 使用Hexo主题"></a>8. 使用Hexo主题</h4><p>我这里用的是大名鼎鼎的Next,我就用Next举例子了,其他的主题,可以看他们对应的说明,都会有教程的</p>
+<p>cd到博客目录下,使用下面的Git命令,将next拉到本地</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ git clone https://github.com/iissnan/hexo-theme-next themes/next</div></pre></td></tr></table></figure>
+<p>编辑Hexo配置文件,将theme一项后面改为next(记得冒号后面加空格)</p>
+<p>执行 hexo s –debug 开启本地站点,并进入调试模式,看下效果</p>
+<p>next提供了三种风格,关于next的配置,需要到博客目录/themes/next下面 找到_config.yml文件进行配置,具体配置到next的官网看就可以了.</p>
+<h5 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h5><ul>
+<li>themes目录是Hexo的主题模板文件夹</li>
+<li>Hexo的配置文件命名风格都是以_config.yml命名,模板的_config.yml和Hexo的_config.yml是两回事,千万不要改错了!!!</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">hexo配置文件路径</div><div class="line">博客目录/_config.yml</div><div class="line">模板配置文件路径</div><div class="line">博客目录/themes/对应的模板/_config.yml</div></pre></td></tr></table></figure>
+<p>大致的从搭建到使用的步骤就是这些.</p>
+<p>从上周开始我尝试了wordpress,hexo和jekyll.也踩了很多坑,文字太多,没办法一一表述.</p>
+<p>虽然最后都解决了,并且可以正常运行了,但是犹豫再三还是放弃了</p>
+<p>最终选择了Hexo,其实主要还是觉得利用上github比较酷,感觉很专业</p>
+<p>国内还可以选择coding替代github,coding可以选择北京和香港的节点,比github要快,需要的自行百度</p>
+<p>我个人也很喜欢jekyll,还有喵神写的那个他博客用的模板.</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>坚持技术分享，感谢支持!</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="九月. 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="九月. 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/hexo静态博客/" rel="tag"># hexo静态博客</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/01/05/移动端工程结构总结/" rel="next" title="移动端工程结构总结">
+                <i class="fa fa-chevron-left"></i> 移动端工程结构总结
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/10/19/ubantu一键换内核并安装锐速脚本/" rel="prev" title="ubantu一键换内核并安装锐速脚本(收藏)">
+                ubantu一键换内核并安装锐速脚本(收藏) <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="SOHUCS"></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.png"
+                alt="九月." />
+            
+              <p class="site-author-name" itemprop="name">九月.</p>
+              <p class="site-description motion-element" itemprop="description">just a smelly programmer.</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:gwkkansiliyundi@163.com" target="_blank" title="E-Mail">
+                    
+                      <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-使用EPEL安装nodeJs"><span class="nav-number">1.</span> <span class="nav-text">1. 使用EPEL安装nodeJs</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-安装git"><span class="nav-number">2.</span> <span class="nav-text">2.安装git</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-安装Hexo"><span class="nav-number">3.</span> <span class="nav-text">3.安装Hexo</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-配置Hexo"><span class="nav-number">4.</span> <span class="nav-text">4.配置Hexo</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-创建Repository"><span class="nav-number">5.</span> <span class="nav-text">5.创建Repository</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#登录github-创建一个新的Repository"><span class="nav-number">5.1.</span> <span class="nav-text">登录github,创建一个新的Repository</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#设置SSH-key"><span class="nav-number">5.2.</span> <span class="nav-text">设置SSH key</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-部署到github"><span class="nav-number">6.</span> <span class="nav-text">6.部署到github</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-使用Hexo写博客"><span class="nav-number">7.</span> <span class="nav-text">7.使用Hexo写博客</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#删除博客"><span class="nav-number">7.1.</span> <span class="nav-text">删除博客</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#新建博客"><span class="nav-number">7.2.</span> <span class="nav-text">新建博客</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#8-使用Hexo主题"><span class="nav-number">8.</span> <span class="nav-text">8. 使用Hexo主题</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#注意"><span class="nav-number">8.1.</span> <span class="nav-text">注意</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2016 &mdash; <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">九月.</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+  
+    <script type="text/javascript">
+    (function(){
+      var appid = 'cyteaOKpb';
+      var conf = '5d2d2278579e5418f9e1f1765953689d';
+      var width = window.innerWidth || document.documentElement.clientWidth;
+      if (width < 960) {
+      window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="https://changyan.sohu.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>'); } else { var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("https://changyan.sohu.com/upload/changyan.js",function(){
+        window.changyan.api.config({appid:appid,conf:conf})});
+      }
+    })();
+    </script>
+    <script type="text/javascript" src="https://assets.changyan.sohu.com/upload/plugins/plugins.count.js"></script>
+  
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("5X3n3Xe3l4oJgBBxyWWDndHO-gzGzoHsz", "sM9u8vOzMWiQvKkGDBBXK0qU");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -5,6 +5,7 @@ tags: hexo静态博客
 ---
 #### 1. 使用EPEL安装nodeJs
 >  EPEL（Extra Packages for Enterprise Linux）企业版Linux的额外软件包，是Fedora小组维护的一个软件仓库项目，为RHEL/CentOS提供他们默认不提供的软件包。
+
 因为Hexo是跑在nodejs环境下的,所以要装nodejs环境
 
 首先查看当前系统下是否安装了nodeJs

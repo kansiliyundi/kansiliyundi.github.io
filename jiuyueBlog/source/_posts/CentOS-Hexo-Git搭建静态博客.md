@@ -85,7 +85,7 @@ http://localhost:4000
 页面显示出来则成功建立了一个博客
 
 #### 4.配置Hexo
-Hexo的配置文件是在博客目录下的 _config.yml文件,在博客目录下执行
+Hexo的配置文件是在博客目录下的_config.yml文件,在博客目录下执行
 ```
 $ vim _config.yml
 ```

@@ -1,8 +1,12 @@
 ---
 title: ijkpalyer编译集成
-date: 2020-3-10 12:24:55
-tags: iOS
+tags:
+  - iOS
+categories: []
+toc: false
+date: 2020-03-10 12:24:55
 ---
+
 > ijk安卓和iOS的编译过程大同小异,只要搞清楚配置文件的规则都是一样的，本文以iOS为例
 
 ## 拉代码

@@ -13,7 +13,7 @@ tags: iOS
 iOS崩溃主要是有Mach异常,以及Objective-C异常两种:
 Mach异常最后会被转换为Signal信号,所以可以捕获Signal信号来处理它.
 Objective-C的异常NSException会由系统抛出,可以通过注册NSUncaughtExceptionHandler来捕获它.
-
+<!-- more --> 
 ##### 直接上代码 一步一步来
 ```
 //记录之前的异常处理器

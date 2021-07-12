@@ -19,6 +19,7 @@ bash 是一个为GNU项目编写的Unix shell.
 在Linux中默认的Shell版本为Bash,而我们使用Linux的场景一般往往是连接服务器,所以也就懒得更换掉这个默认的Shell了.
 但是在Mac OS中,系统默认是预装了除了Bash之外的其他版本Shell的,而Mac OS我们的使用场景往往是自己的工作机,所以替换一个舒适的Shell环境大有可为.
 这里我推荐的是zsh.
+<!-- more --> 
 ###### 什么是zsh
 zsh 是一个完全兼容了Bash,且更强大,使用更舒服的Shell.
 即便你熟悉了Bash的操作,也可以不需要很多学习成本的切换过来

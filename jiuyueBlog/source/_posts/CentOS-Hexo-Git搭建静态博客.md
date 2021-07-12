@@ -29,6 +29,7 @@ $ sudo yum install nodejs
 ```
 $ node -v
 ```
+<!-- more --> 
 #### 2.安装git
 查看系统是否安装了git
 ```

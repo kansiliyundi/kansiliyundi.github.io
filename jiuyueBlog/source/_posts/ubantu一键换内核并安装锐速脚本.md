@@ -16,6 +16,7 @@ tags: ss,vps
 $ dpkg --list | grep linux-image
 ```
 请将[脚本内容](#脚本内容)中的代码复制,保存为ruisu.sh 存放到ubuntu中,然后执行下面的命令
+<!-- more --> 
 #### 执行脚本
 ```
 $ bash ruisu.sh

@@ -15,7 +15,7 @@ git clone https://github.com/Bilibili/ijkplayer.git ijkplayer-ios
 # 进入代码所在文件夹
 cd ijkplayer-ios
 ```
-
+<!-- more --> 
 ## 文件说明
 ### 关键文件说明：
 ```

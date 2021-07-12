@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"kansiliyundi.github.io","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="工作中或多或少会用到命令行,无论你使用的是windows,Mac或者是Liunx,都应当拥有一个令人愉悦的命令行环境,让枯燥的命令行操作变得生动,易于上手.  基本知识小科普什么是Shellshell 英文翻译为壳在windows的CMD以及Mac OS的Terminal应当理解为命令行解释器 (Command Line Interface shell).他是用来连接命令行与系统的,用来管理你和">
+<meta property="og:type" content="article">
+<meta property="og:title" content="构建令人愉悦的shell环境(mac)">
+<meta property="og:url" content="https://kansiliyundi.github.io/2017/11/16/%E6%9E%84%E5%BB%BA%E4%BB%A4%E4%BA%BA%E6%84%89%E6%82%A6%E7%9A%84shell%E7%8E%AF%E5%A2%83(mac)/index.html">
+<meta property="og:site_name" content="九月.">
+<meta property="og:description" content="工作中或多或少会用到命令行,无论你使用的是windows,Mac或者是Liunx,都应当拥有一个令人愉悦的命令行环境,让枯燥的命令行操作变得生动,易于上手.  基本知识小科普什么是Shellshell 英文翻译为壳在windows的CMD以及Mac OS的Terminal应当理解为命令行解释器 (Command Line Interface shell).他是用来连接命令行与系统的,用来管理你和">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://kansiliyundi.github.io/img/1510820449852.jpg">
+<meta property="og:image" content="https://kansiliyundi.github.io/img/1510820508851.jpg">
+<meta property="og:image" content="https://kansiliyundi.github.io/img/1510820994873.jpg">
+<meta property="article:published_time" content="2017-11-16T06:38:56.000Z">
+<meta property="article:modified_time" content="2021-07-12T07:17:36.104Z">
+<meta property="article:author" content="九月.">
+<meta property="article:tag" content="Mac,Linux">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://kansiliyundi.github.io/img/1510820449852.jpg">
+
+<link rel="canonical" href="https://kansiliyundi.github.io/2017/11/16/%E6%9E%84%E5%BB%BA%E4%BB%A4%E4%BA%BA%E6%84%89%E6%82%A6%E7%9A%84shell%E7%8E%AF%E5%A2%83(mac)/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>构建令人愉悦的shell环境(mac) | 九月.</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">九月.</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">just a smelly programmer.</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://kansiliyundi.github.io/2017/11/16/%E6%9E%84%E5%BB%BA%E4%BB%A4%E4%BA%BA%E6%84%89%E6%82%A6%E7%9A%84shell%E7%8E%AF%E5%A2%83(mac)/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="九月.">
+      <meta itemprop="description" content="just a smelly programmer.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="九月.">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          构建令人愉悦的shell环境(mac)
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2017-11-16 14:38:56" itemprop="dateCreated datePublished" datetime="2017-11-16T14:38:56+08:00">2017-11-16</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-07-12 15:17:36" itemprop="dateModified" datetime="2021-07-12T15:17:36+08:00">2021-07-12</time>
+              </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Changyan：</span>
+    
+    
+      <a title="changyan" href="/2017/11/16/%E6%9E%84%E5%BB%BA%E4%BB%A4%E4%BA%BA%E6%84%89%E6%82%A6%E7%9A%84shell%E7%8E%AF%E5%A2%83(mac)/#SOHUCS" itemprop="discussionUrl">
+        <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="2017/11/16/构建令人愉悦的shell环境(mac)/" itemprop="commentCount"></span>
+      </a>
+    
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <blockquote>
+<p>工作中或多或少会用到命令行,无论你使用的是windows,Mac或者是Liunx,都应当拥有一个令人愉悦的命令行环境,让枯燥的命令行操作变得生动,易于上手.</p>
+</blockquote>
+<h3 id="基本知识小科普"><a href="#基本知识小科普" class="headerlink" title="基本知识小科普"></a>基本知识小科普</h3><h4 id="什么是Shell"><a href="#什么是Shell" class="headerlink" title="什么是Shell"></a>什么是Shell</h4><p>shell 英文翻译为壳<br>在windows的CMD以及Mac OS的Terminal应当理解为命令行解释器 (Command Line Interface shell).<br>他是用来连接命令行与系统的,用来管理你和操作系统间的交互.</p>
+<h4 id="什么是Bash"><a href="#什么是Bash" class="headerlink" title="什么是Bash"></a>什么是Bash</h4><p>bash 是一个为GNU项目编写的Unix shell.<br>在Mac 或 Linux,这些基于Unix的系统的Shell版本都为Bash.</p>
+<h4 id="为什么要换掉Bash"><a href="#为什么要换掉Bash" class="headerlink" title="为什么要换掉Bash"></a>为什么要换掉Bash</h4><p>在Linux中默认的Shell版本为Bash,而我们使用Linux的场景一般往往是连接服务器,所以也就懒得更换掉这个默认的Shell了.<br>但是在Mac OS中,系统默认是预装了除了Bash之外的其他版本Shell的,而Mac OS我们的使用场景往往是自己的工作机,所以替换一个舒适的Shell环境大有可为.<br>这里我推荐的是zsh.</p>
+<span id="more"></span> 
+<h6 id="什么是zsh"><a href="#什么是zsh" class="headerlink" title="什么是zsh"></a>什么是zsh</h6><p>zsh 是一个完全兼容了Bash,且更强大,使用更舒服的Shell.<br>即便你熟悉了Bash的操作,也可以不需要很多学习成本的切换过来<br>zsh的好处有很多,列举几点</p>
+<ul>
+<li>zsh 的补全模式很方便 按两下TAB键可以触发zsh的补全,所有的补全选项都可以通过方向键或者Ctrl-n/p/f/b来选择</li>
+<li>zsh 支持命令选项补全 例如ls - 连按两下TAB键,即可出现ls的所有选项供你选择</li>
+<li>zsh 支持命令参数补全 例如kill进程,原本需要根据进程名查询进程ID,然后记下ID,再kill掉进程,而zsh可以做到只要kill &lt;进程名&gt; 它会自动补全进程的ID</li>
+<li>zsh 强大的快速目录切换 经常会有的场景是你需要在两个目录下不停切换,总要CD很长的路径,zsh可以根据1-9的数字,快速访问你的历史访问路径.还可以通过d来查看目录访问历史</li>
+</ul>
+<p>还有什么目录补全之类的好处就不多赘述了,总之是一个使用起来很舒服的Shell.</p>
+<h6 id="什么是oh-my-zsh"><a href="#什么是oh-my-zsh" class="headerlink" title="什么是oh-my-zsh"></a>什么是oh-my-zsh</h6><p>但是zsh 的默认配置及其复杂繁琐,新上手的同学推荐使用oh-my-zsh<br>oh-my-zsh 它基于 zsh 命令行，提供了主题配置，插件机制，已经内置的便捷操作。给我们一种全新的方式使用命令行。</p>
+<h4 id="iTerm"><a href="#iTerm" class="headerlink" title="iTerm"></a>iTerm</h4><p>iTerm是用来替换Mac下命令行工具Terminal(终端)的,因为他的功能比Terminal更强大,我目前用到最实际的感受就是分屏功能确实爽,可以拆出很多个小的命令行窗口,并且各种快捷键操作非常舒服.</p>
+<p>安装iTerm 只需要到官网下载,正常安装即可.<br>Windows下可以使用xShell替换CMD</p>
+<h3 id="替换开始"><a href="#替换开始" class="headerlink" title="替换开始"></a>替换开始</h3><p>Mac OS 首先安装iTerm</p>
+<h4 id="切换Shell"><a href="#切换Shell" class="headerlink" title="切换Shell"></a>切换Shell</h4><p>首先查看本地安装的Shell</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ cat /etc/shells</span><br></pre></td></tr></table></figure>
+<p>Mac OS默认安装了如下6个Shell</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">/bin/bash</span><br><span class="line">/bin/csh</span><br><span class="line">/bin/ksh</span><br><span class="line">/bin/sh</span><br><span class="line">/bin/tcsh</span><br><span class="line">/bin/zsh</span><br></pre></td></tr></table></figure>
+<p>正常的切换到oh-my-zsh的步骤应当是</p>
+<ol>
+<li>clone oh-my-zsh的git库</li>
+<li>备份zshrc文件</li>
+<li>替换新的zshrc文件为oh-my-zsh</li>
+</ol>
+<p>这里我们直接使用脚本一键替换</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 这个脚本为我们做了上述的事情</span><br><span class="line">$ curl -L https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh | sh</span><br></pre></td></tr></table></figure>
+<p>切换Shell为zsh</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ chsh -s /bin/zsh</span><br></pre></td></tr></table></figure>
+<p>安装完成,重启iTerm.</p>
+<h4 id="美化shell环境"><a href="#美化shell环境" class="headerlink" title="美化shell环境"></a>美化shell环境</h4><h5 id="iTerm美化"><a href="#iTerm美化" class="headerlink" title="iTerm美化"></a>iTerm美化</h5><p>我是用的主题是 <a target="_blank" rel="noopener" href="https://github.com/chriskempson/tomorrow-theme">Tomorrow</a><br>下载Tomorrow并解压.<br>打开iTerm -&gt; Preferences -&gt; profiles -&gt; Colors标签 -&gt;右下角Color Presets -&gt;import<br>选择解压后的Tomorrow目录,找到目录下iTerm2文件夹,里面有5个主题文件,全选,导入.<br>再次选择右下角Color Presets,会发现导入的主题已经出现在下面,我用的是Tomorrow Night Eighties.</p>
+<h5 id="oh-my-zsh美化"><a href="#oh-my-zsh美化" class="headerlink" title="oh-my-zsh美化"></a>oh-my-zsh美化</h5><p>oh-my-zsh也是可以使用主题的<br>我是用的是ys主题<br>本地主题可以在 ~/.oh-my-zsh/themes/中看到<br>主题的样式可以去<a target="_blank" rel="noopener" href="https://github.com/robbyrussell/oh-my-zsh/wiki/themes">oh-my-zsh官网主题列表</a>查看,官网还提供了除了141个自带主题之外的其他主题.<br>我用的是自带的ys主题,因为有些主题为了好看,需要用到一些特殊字符,还要导入指定的字体,我嫌麻烦.<br>想要修改主题也很简单</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># 编辑配置文件</span><br><span class="line">$ vim ~/.zshrc</span><br><span class="line"># 修改ZSH_THEME字段 ZSH_THEME=&quot;主题名&quot;</span><br><span class="line">ZSH_THEME=&quot;ys&quot;</span><br><span class="line"># 保存并退出</span><br><span class="line">$ wq</span><br></pre></td></tr></table></figure>
+<p>重启iTerm</p>
+<h5 id="vim-美化"><a href="#vim-美化" class="headerlink" title="vim 美化"></a>vim 美化</h5><p>我们美化了命令行工具,美化了Shell,但是最常用的Vim却不在他们美化的范围内,所以我们需要对vim处理一下,不然Vim打开的文件,都是纯白字色,辨识度很低.<br>打开刚才下载的iTerm的Tomorrow主题文件夹</p>
+<blockquote>
+<p>没错,tomorrow主题不仅仅支持iTerm,还支持Atom,Eclipse,Xcode,Visual Studio,notepad++,OS X Terminal等等多种工具.</p>
+</blockquote>
+<p>找到vim文件夹 -&gt; colors<br>复制里面的vim主题文件到 ~/.vim/colors文件夹下<br>编辑vim配置文件 ~/.vimrc  (mac 系统下默认好像是没有的,需要自己创建)</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 我使用的依然是 Tomorrow-Night-Eighties</span><br><span class="line">colorscheme Tomorrow-Night-Eighties</span><br></pre></td></tr></table></figure>
+<p>以下是我的配置文件信息,我加入了注释,可以直接复制我的配置文件使用</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">$ vim ~/.vimrc</span><br><span class="line"></span><br><span class="line">&quot; Configuration file for vim</span><br><span class="line">set modelines=0     &quot; CVE-2007-2438</span><br><span class="line">&quot; 语法高亮</span><br><span class="line">syntax on</span><br><span class="line">&quot; 主题</span><br><span class="line">colorscheme Tomorrow-Night-Eighties</span><br><span class="line">&quot; 显示行号</span><br><span class="line">set number</span><br><span class="line"></span><br><span class="line">&quot; 自动缩进</span><br><span class="line">set autoindent</span><br><span class="line">set cindent</span><br><span class="line">&quot; Tab键的宽度</span><br><span class="line">set tabstop=4</span><br><span class="line">&quot; 统一缩进为4</span><br><span class="line">set softtabstop=4</span><br><span class="line">set shiftwidth=4</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&quot;搜索逐字符高亮</span><br><span class="line"> set hlsearch</span><br><span class="line"> set incsearch</span><br><span class="line"></span><br><span class="line"> &quot; Normally we use vim-extensions. If you want true vi-compatibility</span><br><span class="line"> &quot; remove change the following statements</span><br><span class="line"> &quot; Use Vim defaults instead of 100% vi compatibility</span><br><span class="line"> &quot; 不使用vi的键盘模式 使用vim自己的</span><br><span class="line"> set nocompatible</span><br><span class="line"> &quot; more powerful backspacing</span><br><span class="line"> set backspace=2</span><br><span class="line"></span><br><span class="line"> &quot; Don&#x27;t write backup file if vim is being called by &quot;crontab -e&quot;</span><br><span class="line"> au BufWrite /private/tmp/crontab.* set nowritebackup nobackup</span><br><span class="line"> &quot; Don&#x27;t write backup file if vim is being called by &quot;chpass&quot;</span><br><span class="line"> au BufWrite /private/etc/pw.* set nowritebackup nobackup</span><br><span class="line"> let skip_defaults_vim=1</span><br></pre></td></tr></table></figure>
+<p>ps:开启行号是个很纠结的事,因为复制的时候会把行号也复制出来,但是不开启又看着不舒服.自由取舍吧.</p>
+<p>以下是我的iTerm截图<br><img src="/img/1510820449852.jpg" alt="iTerm截图"><br><img src="/img/1510820508851.jpg" alt="iTerm截图"><br><img src="/img/1510820994873.jpg" alt="iTerm截图"></p>
+<p>祝你愉快!</p>
+
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div>坚持技术分享，感谢支持!</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.jpg" alt="九月. 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.jpg" alt="九月. 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Mac-Linux/" rel="tag"># Mac,Linux</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2017/10/19/ubantu%E4%B8%80%E9%94%AE%E6%8D%A2%E5%86%85%E6%A0%B8%E5%B9%B6%E5%AE%89%E8%A3%85%E9%94%90%E9%80%9F%E8%84%9A%E6%9C%AC/" rel="prev" title="ubantu一键换内核并安装锐速脚本(收藏)">
+      <i class="fa fa-chevron-left"></i> ubantu一键换内核并安装锐速脚本(收藏)
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2018/04/19/iOS%20Crash%20Hook/" rel="next" title="iOS Crash Hook">
+      iOS Crash Hook <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="SOHUCS"></div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E7%9F%A5%E8%AF%86%E5%B0%8F%E7%A7%91%E6%99%AE"><span class="nav-number">1.</span> <span class="nav-text">基本知识小科普</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%98%AFShell"><span class="nav-number">1.1.</span> <span class="nav-text">什么是Shell</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%98%AFBash"><span class="nav-number">1.2.</span> <span class="nav-text">什么是Bash</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E6%8D%A2%E6%8E%89Bash"><span class="nav-number">1.3.</span> <span class="nav-text">为什么要换掉Bash</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%98%AFzsh"><span class="nav-number">1.3.0.1.</span> <span class="nav-text">什么是zsh</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%98%AFoh-my-zsh"><span class="nav-number">1.3.0.2.</span> <span class="nav-text">什么是oh-my-zsh</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#iTerm"><span class="nav-number">1.4.</span> <span class="nav-text">iTerm</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9B%BF%E6%8D%A2%E5%BC%80%E5%A7%8B"><span class="nav-number">2.</span> <span class="nav-text">替换开始</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%87%E6%8D%A2Shell"><span class="nav-number">2.1.</span> <span class="nav-text">切换Shell</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BE%8E%E5%8C%96shell%E7%8E%AF%E5%A2%83"><span class="nav-number">2.2.</span> <span class="nav-text">美化shell环境</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#iTerm%E7%BE%8E%E5%8C%96"><span class="nav-number">2.2.1.</span> <span class="nav-text">iTerm美化</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#oh-my-zsh%E7%BE%8E%E5%8C%96"><span class="nav-number">2.2.2.</span> <span class="nav-text">oh-my-zsh美化</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#vim-%E7%BE%8E%E5%8C%96"><span class="nav-number">2.2.3.</span> <span class="nav-text">vim 美化</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">九月.</p>
+  <div class="site-description" itemprop="description">just a smelly programmer.</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">9</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2016 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">九月.</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  <script>
+  NexT.utils.loadComments(document.querySelector('#SOHUCS'), () => {
+    var appid = 'cyteaOKpb';
+    var conf = '5d2d2278579e5418f9e1f1765953689d';
+    var width = window.innerWidth || document.documentElement.clientWidth;
+    if (width < 960) {
+      window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="https://changyan.sohu.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>');
+    } else {
+      var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("https://changyan.sohu.com/upload/changyan.js",function(){window.changyan.api.config({appid:appid,conf:conf})});
+    }
+  });
+  </script>
+  <script src="https://assets.changyan.sohu.com/upload/plugins/plugins.count.js"></script>
+
+</body>
+</html>

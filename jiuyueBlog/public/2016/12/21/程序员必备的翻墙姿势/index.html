@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"kansiliyundi.github.io","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="程序员需要一个自由的互联网！！！             其实除了下面描述的vps搭建方法，如果不差钱想要搭建vps服务器，可以去阿里云租个香港服务器最低配置就可以，大概1.2K一年，流量不要买固定的带宽，按量付费，速度选最快，充100块能用超久，速度飞起               翻墙的几种手段这里就不介绍，修改Hosts、蓝灯、GoAgent、Tor等方式了">
+<meta property="og:type" content="article">
+<meta property="og:title" content="程序员必备的翻墙姿势+ss搭建vps服务器">
+<meta property="og:url" content="https://kansiliyundi.github.io/2016/12/21/%E7%A8%8B%E5%BA%8F%E5%91%98%E5%BF%85%E5%A4%87%E7%9A%84%E7%BF%BB%E5%A2%99%E5%A7%BF%E5%8A%BF/index.html">
+<meta property="og:site_name" content="九月.">
+<meta property="og:description" content="程序员需要一个自由的互联网！！！             其实除了下面描述的vps搭建方法，如果不差钱想要搭建vps服务器，可以去阿里云租个香港服务器最低配置就可以，大概1.2K一年，流量不要买固定的带宽，按量付费，速度选最快，充100块能用超久，速度飞起               翻墙的几种手段这里就不介绍，修改Hosts、蓝灯、GoAgent、Tor等方式了">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2016-12-21T08:28:11.000Z">
+<meta property="article:modified_time" content="2021-07-12T07:17:19.169Z">
+<meta property="article:author" content="九月.">
+<meta property="article:tag" content="ss,vps">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://kansiliyundi.github.io/2016/12/21/%E7%A8%8B%E5%BA%8F%E5%91%98%E5%BF%85%E5%A4%87%E7%9A%84%E7%BF%BB%E5%A2%99%E5%A7%BF%E5%8A%BF/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>程序员必备的翻墙姿势+ss搭建vps服务器 | 九月.</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">九月.</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">just a smelly programmer.</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://kansiliyundi.github.io/2016/12/21/%E7%A8%8B%E5%BA%8F%E5%91%98%E5%BF%85%E5%A4%87%E7%9A%84%E7%BF%BB%E5%A2%99%E5%A7%BF%E5%8A%BF/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="九月.">
+      <meta itemprop="description" content="just a smelly programmer.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="九月.">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          程序员必备的翻墙姿势+ss搭建vps服务器
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2016-12-21 16:28:11" itemprop="dateCreated datePublished" datetime="2016-12-21T16:28:11+08:00">2016-12-21</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-07-12 15:17:19" itemprop="dateModified" datetime="2021-07-12T15:17:19+08:00">2021-07-12</time>
+              </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Changyan：</span>
+    
+    
+      <a title="changyan" href="/2016/12/21/%E7%A8%8B%E5%BA%8F%E5%91%98%E5%BF%85%E5%A4%87%E7%9A%84%E7%BF%BB%E5%A2%99%E5%A7%BF%E5%8A%BF/#SOHUCS" itemprop="discussionUrl">
+        <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="2016/12/21/程序员必备的翻墙姿势/" itemprop="commentCount"></span>
+      </a>
+    
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h3 id="程序员需要一个自由的互联网！！！"><a href="#程序员需要一个自由的互联网！！！" class="headerlink" title="程序员需要一个自由的互联网！！！"></a>程序员需要一个自由的互联网！！！</h3><div class="note info">
+            <p>其实除了下面描述的vps搭建方法，如果不差钱想要搭建vps服务器，可以去阿里云租个香港服务器最低配置就可以，大概1.2K一年，流量不要买固定的带宽，按量付费，速度选最快，充100块能用超久，速度飞起  </p>
+          </div>
+
+<h4 id="翻墙的几种手段"><a href="#翻墙的几种手段" class="headerlink" title="翻墙的几种手段"></a>翻墙的几种手段</h4><p>这里就不介绍，修改Hosts、蓝灯、GoAgent、Tor等方式了</p>
+<span id="more"></span> 
+<h5 id="VPN"><a href="#VPN" class="headerlink" title="VPN"></a>VPN</h5><p>VPN其实就是把你整个网关出口跟远端服务器之间建立一个隧道，你的所有的出口数据都会经过VPN服务器进行转发。</p>
+<h5 id="优点"><a href="#优点" class="headerlink" title="优点:"></a>优点:</h5><p>全局代理，配置简单。</p>
+<h5 id="缺点"><a href="#缺点" class="headerlink" title="缺点:"></a>缺点:</h5><p>缺点也很明显，无差别代理，访问国内网站，相当于先跳转到国外，再访问国内网站，速度可想而知。</p>
+<p>网上可以找到各种免费的VPN代理，也有收费。这里推荐GreenVPN，注册之后可以有免费的VPN用，也可以付费。（PS，网上各种假冒网站，注意甄别！）</p>
+<p>具体如何使用，这里就不过多介绍了，</p>
+<p>总结：VPN适合需要系统全局翻墙，并且是按需使用的方式。</p>
+<h4 id="Shadowdsocks"><a href="#Shadowdsocks" class="headerlink" title="Shadowdsocks"></a>Shadowdsocks</h4><h5 id="Shadowdsocks介绍-摘自维基百科"><a href="#Shadowdsocks介绍-摘自维基百科" class="headerlink" title="Shadowdsocks介绍(摘自维基百科)"></a>Shadowdsocks介绍(摘自维基百科)</h5><p>shadowsocks是一种基于Socks5代理方式的网络数据加密传输包，并采用Apache许可证、GPL、MIT许可证等多种自由软件许可协议开放源代码。shadowsocks分为服务器端和客户端，在使用之前，需要先将服务器端部署到服务器上面，然后通过客户端连接并创建本地代理。目前包使用Python、C、C++、C#、Go语言等编程语言开发。</p>
+<p>在中国大陆，本工具也被广泛用于突破防火长城（GFW），以浏览被封锁、屏蔽或干扰的内容。2015年8月22日，Shadowsocks原作者Clowwindy称受到了中国政府的压力，宣布停止维护此计划（项目）并移除其个人页面所存储的源代码。因为移除之前就有大量的复制副本，所以事实上并未停止维护，而是转由其他贡献者们持续维护中。</p>
+<h5 id="Shadowsocks的优劣："><a href="#Shadowsocks的优劣：" class="headerlink" title="Shadowsocks的优劣："></a>Shadowsocks的优劣：</h5><h5 id="优势"><a href="#优势" class="headerlink" title="优势:"></a>优势:</h5><p>安全。所有数据流量全部经过加密，加密算法可选并支持自定义算法。另外，远程DNS解析也使得本地的ISP无法通过DNS查询获取你所访问的网站。</p>
+<p>速度相对较快。由于其隐蔽性，只会有很少的数据包会被GFW丢弃，从而保证了连接速度。</p>
+<p>客户端配置简单。配置时只需要填写IP /域名、端口号，密码，然后选择加密方式即可。</p>
+<p>智能切换。 传统的VPN方式，在切换网络时非常不方便， 比如连上国外的 VPN 之后会发现访问国内的网站速度严重下降。ShadowSocks支持PAC列表，根据PAC中的规则，有针对性地选用恰当的网络访问方式，兼顾了访问速度与访问效率。移动客户端还支持针对不同应用设置单独代理。</p>
+<p>代码开源。不像某些蜜罐式的翻墙工具，开源的代码保证了无后门，从而为上网的隐私性与安全性提供保障。</p>
+<p>跨平台。支持主流系统包括Windows，Linux，Mac，Android,IOS，都有对应的客户端支持。</p>
+<h5 id="劣势"><a href="#劣势" class="headerlink" title="劣势:"></a>劣势:</h5><p>技术成本。若自己搭建ShadowSocks服务，需要一定的技术成本。因为大部分服务端是基于运行Linux的VPS（虚拟主机）搭建，因此需要学会使用putty等远程管理工具的使用方法，并掌握一定的Linux基本命令行操作。</p>
+<p>金钱成本。租用国外的服务器，需要价格不菲的费用。 若使用免费ShadowSocks账号，可能有一定的安全成本。有一些人会将自己的ShadowSocks节点免费分享出来，这些人是非常值得肯定和称赞的！但是其中有一小部分人别有居心，例如在ShadowSocks的服务器端监听网络流量，进行中间人攻击等，这类钓鱼服务器会严重损害用户的个人信息安全。 若购买收费的ShadowSocks账号， 需要一定的金钱成本 由于很多ShadowSocks卖家都是以盈利为目的，需要花费一定的费用。 那么，自己想要有一个影梭账号的话，到底是选用哪种比较好呢？可以看到网上很多卖ShadowSocks账号的，有的价格很便宜，比自己搭服务器划算多了，是不是直接购买一个账号比较好呢？ 在这里我建议大家自己搭服务器</p>
+<p>上面介绍的优势，就是我推荐大家使用的理由，而劣势就是写文章的缘由。</p>
+<h4 id="关于VPN"><a href="#关于VPN" class="headerlink" title="关于VPN"></a>关于VPN</h4><p>虽然Shadowdsocks很好用，但是有的时候，总会碰到一个先有鸡还是有蛋的情况，你要配置Shadowdsocks，但是需要先翻墙，所以为了避免这种情况，最好还有备一个VPN还是有必要的。</p>
+<h4 id="使用和配置Shadowdsocks客户端"><a href="#使用和配置Shadowdsocks客户端" class="headerlink" title="使用和配置Shadowdsocks客户端"></a>使用和配置Shadowdsocks客户端</h4><blockquote>
+<p>由于iOS系统安全性，需要越狱才能安装Shadowdsocks，如果你已经越狱，你可以自行编译安装，源码</p>
+</blockquote>
+<h5 id="iOS不越狱客户端推荐（以下软件使用了iOS9系统的新特性，也就是话说仅支持iOS9-）"><a href="#iOS不越狱客户端推荐（以下软件使用了iOS9系统的新特性，也就是话说仅支持iOS9-）" class="headerlink" title="iOS不越狱客户端推荐（以下软件使用了iOS9系统的新特性，也就是话说仅支持iOS9+）"></a>iOS不越狱客户端推荐（以下软件使用了iOS9系统的新特性，也就是话说仅支持iOS9+）</h5><p>如果搜不到,可以使用境外AppStoreID搜索下载客户端.</p>
+<p>Surge:强烈推荐，虽然价格偏高，但是使用体验最好</p>
+<p>Shadowrocket：价格便宜，买不起上面的，就买这个吧</p>
+<p>potatso:价格比上面贵一些，但是代码开源,有能力的可以自己编译安装。</p>
+<p>Android(Google Play) Shadowsocks</p>
+<p>ps.不想花钱的,可以试试PP助手之类的软件安装.</p>
+<h5 id="客户端使用"><a href="#客户端使用" class="headerlink" title="客户端使用"></a>客户端使用</h5><p>这里只介绍MAC系统使用，如果已经有了Shadowsocks帐号：</p>
+<p>服务器设定 -&gt;IP、端口、加密、密码，一一对应填写。</p>
+<p>测试服务器是否配置成功：</p>
+<p>勾选配置好的服务器，选择全局模式，然后打开Google,如果可以就进行下一步。</p>
+<p>如果打不开，检查填写有误，检查是否使用了默认的443端口，是否开启了其它代理。</p>
+<h5 id="更新-PAC"><a href="#更新-PAC" class="headerlink" title="更新 PAC"></a>更新 PAC</h5><p>关于PAC介绍可以搜一下这篇文章：SS软件中的pac自动代理模式是什么？</p>
+<p>Mac版的ss客户端已经停滞更新，官方版本一直停滞在2.6.3。所以，gfwlist地址的改变，直接导致了PAC无法更新了。解决方法有两种，你任选一种吧。</p>
+<p>方法A：<br>直接改用民间大神修改的2.6.5版本即可，Releases版本：ShadowsocksX-2.6.5<a target="_blank" rel="noopener" href="https://github.com/RobertYan/ShadowsocksX/releases">https://github.com/RobertYan/ShadowsocksX/releases</a></p>
+<p>方法B：<br>如果不信任其他人修改的版本，你可以使用这个脚本更新PAC<a target="_blank" rel="noopener" href="https://gist.github.com/VincentSit/b5b112d273513f153caf23a9da112b3a">https://gist.github.com/VincentSit/b5b112d273513f153caf23a9da112b3a</a><br>测试 PAC 是否生效，选择自动模式代理，再次打开Google，如果可以打开，说明配置成功。</p>
+<h5 id="配置Shadowdsocks服务器"><a href="#配置Shadowdsocks服务器" class="headerlink" title="配置Shadowdsocks服务器"></a>配置Shadowdsocks服务器</h5><p>这里只介绍，购买VPS服务器，来搭建Shadowdsocks服务端。不讨论购买现成的帐号。</p>
+<h6 id="服务器选择一：搬瓦工bandwagonhost"><a href="#服务器选择一：搬瓦工bandwagonhost" class="headerlink" title="服务器选择一：搬瓦工bandwagonhost"></a>服务器选择一：搬瓦工bandwagonhost</h6><p>关键字：价格低、一键配置、支付宝<br>价格：$2.99/月，也会有$3.99一年的特价机器,。</p>
+<p>服务器购买注意：买价格最便宜的就可以了，优先：洛杉矶和佛罗里达（也可以随时切换）,电信用户不支持搬瓦工,如果是电信不用考虑了</p>
+<h6 id="服务器选择二：Vultr"><a href="#服务器选择二：Vultr" class="headerlink" title="服务器选择二：Vultr"></a>服务器选择二：Vultr</h6><p>关键字：配置高，可做服务器、速度快</p>
+<p>价格：$5/月</p>
+<p>服务器购买注意：必须选择日本VPS！！</p>
+<p>注意：由于Vultr没有一键配置选项，所以需要手动配置，但是网上已经有人给出一键安装的脚本：Shadowsocks Python版一键安装脚本</p>
+<h6 id="服务器选择三：Linode"><a href="#服务器选择三：Linode" class="headerlink" title="服务器选择三：Linode"></a>服务器选择三：Linode</h6><p>关键字：本人使用,配置高，可做服务器、速度快</p>
+<p>价格：$5/月</p>
+<p>服务器购买注意：都说Linode日本服务器最快,但是Linode老机房的机器已经没有了,我用的是东京2号机房5美元版,实际体验速度并不是特别快,其他机房有待亲测.</p>
+<p>注意：由于Vultr没有一键配置选项，所以需要手动配置，但是网上已经有人给出一键安装的脚本：Shadowsocks Python版一键安装脚本</p>
+<h5 id="总结与注意"><a href="#总结与注意" class="headerlink" title="总结与注意"></a>总结与注意</h5><p>要想简单便宜，可以选择搬瓦工，但我自己贴身体会来讲，虽然刷网页虽然够了，但是看视频下载文件，还是有些慢，这个时候你可以选择Vultr,和Linode,当然了,我自己用过最爽的还是阿里云的香港vps.</p>
+<h4 id="Shadowdsocks配合其他软件使用"><a href="#Shadowdsocks配合其他软件使用" class="headerlink" title="Shadowdsocks配合其他软件使用"></a>Shadowdsocks配合其他软件使用</h4><p>shadowsocks代理属于socks5代理，通俗的理解，socks5只是局部代理，不能像vpn那样把整个电脑都代理。因此，一般情况下只有支持socks5的软件才能使用shadowsocks代理。当然我们也可以借助命令行来实现，具体见下面介绍：</p>
+<h5 id="终端走代理的方法"><a href="#终端走代理的方法" class="headerlink" title="终端走代理的方法"></a>终端走代理的方法</h5><h6 id="在终端下使用"><a href="#在终端下使用" class="headerlink" title="在终端下使用"></a>在终端下使用</h6><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ export ALL_PROXY=socks5://127.0.0.1:1080</span><br></pre></td></tr></table></figure>
+<h6 id="清除代理"><a href="#清除代理" class="headerlink" title="清除代理"></a>清除代理</h6><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ unset ALL_PROXY</span><br></pre></td></tr></table></figure>
+<p>为了测试是否成功可以使用以下命令查看IP</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ curl -i http://ip.cn</span><br></pre></td></tr></table></figure>
+<p>以上命令只对本窗口生效，为了方便呢，可以在~/.bash_profile中加上这个。（如果没有bash_profile文件自行创建）</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">function setproxy() &#123;</span><br><span class="line"># export &#123;HTTP,HTTPS,FTP&#125;_PROXY=&quot;http://127.0.0.1:3128&quot; 也可以设置http代理</span><br><span class="line">export ALL_PROXY=socks5://127.0.0.1:1080</span><br><span class="line">&#125;</span><br><span class="line">function unsetproxy() &#123;</span><br><span class="line"># unset &#123;HTTP,HTTPS,FTP&#125;_PROXY</span><br><span class="line">unset ALL_PROXY</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>需要使用代理的时候setproxy，不用了就unsetproxy</p>
+<p>就可以很方便的在shell环境下切换设置代理了。</p>
+<h6 id="路由器上使用Shadowdsocks配置局域网"><a href="#路由器上使用Shadowdsocks配置局域网" class="headerlink" title="路由器上使用Shadowdsocks配置局域网"></a>路由器上使用Shadowdsocks配置局域网</h6><p>每个路由器都不太一样，自行谷歌吧。</p>
+<h4 id="Shadowdsocks-进阶"><a href="#Shadowdsocks-进阶" class="headerlink" title="Shadowdsocks 进阶"></a>Shadowdsocks 进阶</h4><h5 id="Shadowdsocks加速的几种方案"><a href="#Shadowdsocks加速的几种方案" class="headerlink" title="Shadowdsocks加速的几种方案"></a>Shadowdsocks加速的几种方案</h5><p>方案一：国内服务器安装Haproxy代理Shadowsocks实现加速</p>
+<p>方案二：使用锐速加速</p>
+<p>方案三：FilnalSpeed加速方案</p>
+<p>锐速的使用可以看我的博客</p>
+<h3 id="Linux系统使用SS自动脚本搭建服务器"><a href="#Linux系统使用SS自动脚本搭建服务器" class="headerlink" title="Linux系统使用SS自动脚本搭建服务器"></a>Linux系统使用SS自动脚本搭建服务器</h3><h4 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h4><ol>
+<li>一键安装 Shadowsocks-Python， ShadowsocksR， Shadowsocks-Go， Shadowsocks-libev 版（四选一）服务端；</li>
+<li>各版本的启动脚本及配置文件名不再重合；</li>
+<li>每次运行可安装一种版本；</li>
+<li>支持以多次运行来安装多个版本，且各个版本可以共存（注意端口号需设成不同）；</li>
+<li>若已安装多个版本，则卸载时也需多次运行（每次卸载一种）；</li>
+<li>Shadowsocks-Python 和 ShadowsocksR 安装后不可同时启动（因为本质上都属 Python 版）。</li>
+</ol>
+<h4 id="默认配置"><a href="#默认配置" class="headerlink" title="默认配置"></a>默认配置</h4><ul>
+<li><p>服务器端口：自己设定（如不设定，默认为 8989）</p>
+</li>
+<li><p>密码：自己设定（如不设定，默认为 teddysun.com）</p>
+</li>
+<li><p>加密方式：自己设定（如不设定，Python 和 libev 版默认为 aes-256-gcm，R 和 Go 版默认为 aes-256-cfb）</p>
+</li>
+<li><p>协议（protocol）：自己设定（如不设定，默认为 origin）（仅限 ShadowsocksR 版）</p>
+</li>
+<li><p>混淆（obfs）：自己设定（如不设定，默认为 plain）（仅限 ShadowsocksR 版）</p>
+</li>
+<li><p>备注：脚本默认创建单用户配置文件，如需配置多用户，请手动修改相应的配置文件后重启即可。</p>
+<h4 id="客户端下载"><a href="#客户端下载" class="headerlink" title="客户端下载"></a>客户端下载</h4></li>
+<li><p>常规版 Windows 客户端<br><a target="_blank" rel="noopener" href="https://github.com/shadowsocks/shadowsocks-windows/releases">https://github.com/shadowsocks/shadowsocks-windows/releases</a></p>
+</li>
+<li><p>ShadowsocksR 版 Windows 客户端<br><a target="_blank" rel="noopener" href="https://github.com/shadowsocksr/shadowsocksr-csharp/releases">https://github.com/shadowsocksr/shadowsocksr-csharp/releases</a></p>
+</li>
+</ul>
+<h4 id="安装方法"><a href="#安装方法" class="headerlink" title="安装方法"></a>安装方法</h4><p>ssh登录后,使用以下命令</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ wget --no-check-certificate -O shadowsocks-all.sh https://raw.githubusercontent.com/teddysun/shadowsocks_install/master/shadowsocks-all.sh</span><br><span class="line">$ chmod +x shadowsocks-all.sh</span><br><span class="line">$ ./shadowsocks-all.sh 2&gt;&amp;1 | tee shadowsocks-all.log</span><br></pre></td></tr></table></figure>
+<p>安装成功完成后,脚本提示</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Congratulations, your_shadowsocks_version install completed!</span><br><span class="line">Your Server IP        :your_server_ip</span><br><span class="line">Your Server Port      :your_server_port</span><br><span class="line">Your Password         :your_password</span><br><span class="line">Your Encryption Method:your_encryption_method</span><br><span class="line">Welcome to visit:https://teddysun.com/486.html</span><br><span class="line">Enjoy it!</span><br></pre></td></tr></table></figure>
+<h4 id="卸载"><a href="#卸载" class="headerlink" title="卸载"></a>卸载</h4><p>若已安装多个版本，则卸载时也需多次运行（每次卸载一种）</p>
+<p>使用root用户登录，运行以下命令：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./shadowsocks-all.sh uninstall</span><br></pre></td></tr></table></figure>
+<h4 id="启动"><a href="#启动" class="headerlink" title="启动"></a>启动</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">启动脚本后面的参数含义，从左至右依次为：启动，停止，重启，查看状态。</span><br><span class="line">Shadowsocks-Python 版：</span><br><span class="line">/etc/init.d/shadowsocks-python start | stop | restart | status</span><br><span class="line">ShadowsocksR 版：</span><br><span class="line">/etc/init.d/shadowsocks-r start | stop | restart | status</span><br><span class="line">Shadowsocks-Go 版：</span><br><span class="line">/etc/init.d/shadowsocks-go start | stop | restart | status</span><br><span class="line">Shadowsocks-libev 版：</span><br><span class="line">/etc/init.d/shadowsocks-libev start | stop | restart | status</span><br></pre></td></tr></table></figure>
+<h4 id="各版本默认配置文件"><a href="#各版本默认配置文件" class="headerlink" title="各版本默认配置文件"></a>各版本默认配置文件</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Shadowsocks-Python 版：</span><br><span class="line">/etc/shadowsocks-python/config.json</span><br><span class="line">ShadowsocksR 版：</span><br><span class="line">/etc/shadowsocks-r/config.json</span><br><span class="line">Shadowsocks-Go 版：</span><br><span class="line">/etc/shadowsocks-go/config.json</span><br><span class="line">Shadowsocks-libev 版：</span><br><span class="line">/etc/shadowsocks-libev/config.json</span><br></pre></td></tr></table></figure>
+<h4 id="单用户配置文件示例"><a href="#单用户配置文件示例" class="headerlink" title="单用户配置文件示例"></a>单用户配置文件示例</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">&quot;server&quot;:&quot;0.0.0.0&quot;,</span><br><span class="line">&quot;server_port&quot;:your_server_port,</span><br><span class="line">&quot;local_address&quot;:&quot;127.0.0.1&quot;,</span><br><span class="line">&quot;local_port&quot;:1080,</span><br><span class="line">&quot;password&quot;:&quot;your_password&quot;,</span><br><span class="line">&quot;timeout&quot;:300,</span><br><span class="line">&quot;method&quot;:&quot;your_encryption_method&quot;,</span><br><span class="line">&quot;fast_open&quot;: false</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="多用户多端口配置文件示例"><a href="#多用户多端口配置文件示例" class="headerlink" title="多用户多端口配置文件示例"></a>多用户多端口配置文件示例</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">&quot;server&quot;:&quot;0.0.0.0&quot;,</span><br><span class="line">&quot;local_address&quot;:&quot;127.0.0.1&quot;,</span><br><span class="line">&quot;local_port&quot;:1080,</span><br><span class="line">&quot;port_password&quot;:&#123;</span><br><span class="line">&quot;8989&quot;:&quot;password0&quot;,</span><br><span class="line">&quot;9001&quot;:&quot;password1&quot;,</span><br><span class="line">&quot;9002&quot;:&quot;password2&quot;,</span><br><span class="line">&quot;9003&quot;:&quot;password3&quot;,</span><br><span class="line">&quot;9004&quot;:&quot;password4&quot;</span><br><span class="line">&#125;,</span><br><span class="line">&quot;timeout&quot;:300,</span><br><span class="line">&quot;method&quot;:&quot;your_encryption_method&quot;,</span><br><span class="line">&quot;fast_open&quot;: false</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div>坚持技术分享，感谢支持!</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.jpg" alt="九月. 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.jpg" alt="九月. 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/ss-vps/" rel="tag"># ss,vps</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2016/12/19/git%E4%B8%8D%E6%8F%90%E4%BA%A4%E7%A9%BA%E6%96%87%E4%BB%B6%E5%A4%B9%E7%BB%93%E6%9E%84%E8%A7%A3%E5%86%B3%E5%8A%9E%E6%B3%95/" rel="prev" title="git不提交空文件夹结构解决办法">
+      <i class="fa fa-chevron-left"></i> git不提交空文件夹结构解决办法
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2016/12/25/%E7%BB%99centOS%E5%AE%89%E8%A3%85%E9%94%90%E9%80%9F/" rel="next" title="给centOS安装锐速">
+      给centOS安装锐速 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="SOHUCS"></div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A8%8B%E5%BA%8F%E5%91%98%E9%9C%80%E8%A6%81%E4%B8%80%E4%B8%AA%E8%87%AA%E7%94%B1%E7%9A%84%E4%BA%92%E8%81%94%E7%BD%91%EF%BC%81%EF%BC%81%EF%BC%81"><span class="nav-number">1.</span> <span class="nav-text">程序员需要一个自由的互联网！！！</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BF%BB%E5%A2%99%E7%9A%84%E5%87%A0%E7%A7%8D%E6%89%8B%E6%AE%B5"><span class="nav-number">1.1.</span> <span class="nav-text">翻墙的几种手段</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#VPN"><span class="nav-number">1.1.1.</span> <span class="nav-text">VPN</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E4%BC%98%E7%82%B9"><span class="nav-number">1.1.2.</span> <span class="nav-text">优点:</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E7%BC%BA%E7%82%B9"><span class="nav-number">1.1.3.</span> <span class="nav-text">缺点:</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Shadowdsocks"><span class="nav-number">1.2.</span> <span class="nav-text">Shadowdsocks</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Shadowdsocks%E4%BB%8B%E7%BB%8D-%E6%91%98%E8%87%AA%E7%BB%B4%E5%9F%BA%E7%99%BE%E7%A7%91"><span class="nav-number">1.2.1.</span> <span class="nav-text">Shadowdsocks介绍(摘自维基百科)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Shadowsocks%E7%9A%84%E4%BC%98%E5%8A%A3%EF%BC%9A"><span class="nav-number">1.2.2.</span> <span class="nav-text">Shadowsocks的优劣：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E4%BC%98%E5%8A%BF"><span class="nav-number">1.2.3.</span> <span class="nav-text">优势:</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%8A%A3%E5%8A%BF"><span class="nav-number">1.2.4.</span> <span class="nav-text">劣势:</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%85%B3%E4%BA%8EVPN"><span class="nav-number">1.3.</span> <span class="nav-text">关于VPN</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E5%92%8C%E9%85%8D%E7%BD%AEShadowdsocks%E5%AE%A2%E6%88%B7%E7%AB%AF"><span class="nav-number">1.4.</span> <span class="nav-text">使用和配置Shadowdsocks客户端</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#iOS%E4%B8%8D%E8%B6%8A%E7%8B%B1%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%8E%A8%E8%8D%90%EF%BC%88%E4%BB%A5%E4%B8%8B%E8%BD%AF%E4%BB%B6%E4%BD%BF%E7%94%A8%E4%BA%86iOS9%E7%B3%BB%E7%BB%9F%E7%9A%84%E6%96%B0%E7%89%B9%E6%80%A7%EF%BC%8C%E4%B9%9F%E5%B0%B1%E6%98%AF%E8%AF%9D%E8%AF%B4%E4%BB%85%E6%94%AF%E6%8C%81iOS9-%EF%BC%89"><span class="nav-number">1.4.1.</span> <span class="nav-text">iOS不越狱客户端推荐（以下软件使用了iOS9系统的新特性，也就是话说仅支持iOS9+）</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%AE%A2%E6%88%B7%E7%AB%AF%E4%BD%BF%E7%94%A8"><span class="nav-number">1.4.2.</span> <span class="nav-text">客户端使用</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%9B%B4%E6%96%B0-PAC"><span class="nav-number">1.4.3.</span> <span class="nav-text">更新 PAC</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E9%85%8D%E7%BD%AEShadowdsocks%E6%9C%8D%E5%8A%A1%E5%99%A8"><span class="nav-number">1.4.4.</span> <span class="nav-text">配置Shadowdsocks服务器</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%80%89%E6%8B%A9%E4%B8%80%EF%BC%9A%E6%90%AC%E7%93%A6%E5%B7%A5bandwagonhost"><span class="nav-number">1.4.4.1.</span> <span class="nav-text">服务器选择一：搬瓦工bandwagonhost</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%80%89%E6%8B%A9%E4%BA%8C%EF%BC%9AVultr"><span class="nav-number">1.4.4.2.</span> <span class="nav-text">服务器选择二：Vultr</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%80%89%E6%8B%A9%E4%B8%89%EF%BC%9ALinode"><span class="nav-number">1.4.4.3.</span> <span class="nav-text">服务器选择三：Linode</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%80%BB%E7%BB%93%E4%B8%8E%E6%B3%A8%E6%84%8F"><span class="nav-number">1.4.5.</span> <span class="nav-text">总结与注意</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Shadowdsocks%E9%85%8D%E5%90%88%E5%85%B6%E4%BB%96%E8%BD%AF%E4%BB%B6%E4%BD%BF%E7%94%A8"><span class="nav-number">1.5.</span> <span class="nav-text">Shadowdsocks配合其他软件使用</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E7%BB%88%E7%AB%AF%E8%B5%B0%E4%BB%A3%E7%90%86%E7%9A%84%E6%96%B9%E6%B3%95"><span class="nav-number">1.5.1.</span> <span class="nav-text">终端走代理的方法</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#%E5%9C%A8%E7%BB%88%E7%AB%AF%E4%B8%8B%E4%BD%BF%E7%94%A8"><span class="nav-number">1.5.1.1.</span> <span class="nav-text">在终端下使用</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#%E6%B8%85%E9%99%A4%E4%BB%A3%E7%90%86"><span class="nav-number">1.5.1.2.</span> <span class="nav-text">清除代理</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#%E8%B7%AF%E7%94%B1%E5%99%A8%E4%B8%8A%E4%BD%BF%E7%94%A8Shadowdsocks%E9%85%8D%E7%BD%AE%E5%B1%80%E5%9F%9F%E7%BD%91"><span class="nav-number">1.5.1.3.</span> <span class="nav-text">路由器上使用Shadowdsocks配置局域网</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Shadowdsocks-%E8%BF%9B%E9%98%B6"><span class="nav-number">1.6.</span> <span class="nav-text">Shadowdsocks 进阶</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Shadowdsocks%E5%8A%A0%E9%80%9F%E7%9A%84%E5%87%A0%E7%A7%8D%E6%96%B9%E6%A1%88"><span class="nav-number">1.6.1.</span> <span class="nav-text">Shadowdsocks加速的几种方案</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Linux%E7%B3%BB%E7%BB%9F%E4%BD%BF%E7%94%A8SS%E8%87%AA%E5%8A%A8%E8%84%9A%E6%9C%AC%E6%90%AD%E5%BB%BA%E6%9C%8D%E5%8A%A1%E5%99%A8"><span class="nav-number">2.</span> <span class="nav-text">Linux系统使用SS自动脚本搭建服务器</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%AF%B4%E6%98%8E"><span class="nav-number">2.1.</span> <span class="nav-text">说明</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%BB%98%E8%AE%A4%E9%85%8D%E7%BD%AE"><span class="nav-number">2.2.</span> <span class="nav-text">默认配置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%A2%E6%88%B7%E7%AB%AF%E4%B8%8B%E8%BD%BD"><span class="nav-number">2.3.</span> <span class="nav-text">客户端下载</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%89%E8%A3%85%E6%96%B9%E6%B3%95"><span class="nav-number">2.4.</span> <span class="nav-text">安装方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8D%B8%E8%BD%BD"><span class="nav-number">2.5.</span> <span class="nav-text">卸载</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%90%AF%E5%8A%A8"><span class="nav-number">2.6.</span> <span class="nav-text">启动</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%90%84%E7%89%88%E6%9C%AC%E9%BB%98%E8%AE%A4%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="nav-number">2.7.</span> <span class="nav-text">各版本默认配置文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8D%95%E7%94%A8%E6%88%B7%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E7%A4%BA%E4%BE%8B"><span class="nav-number">2.8.</span> <span class="nav-text">单用户配置文件示例</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%A4%9A%E7%94%A8%E6%88%B7%E5%A4%9A%E7%AB%AF%E5%8F%A3%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E7%A4%BA%E4%BE%8B"><span class="nav-number">2.9.</span> <span class="nav-text">多用户多端口配置文件示例</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">九月.</p>
+  <div class="site-description" itemprop="description">just a smelly programmer.</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">10</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2016 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">九月.</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  <script>
+  NexT.utils.loadComments(document.querySelector('#SOHUCS'), () => {
+    var appid = 'cyteaOKpb';
+    var conf = '5d2d2278579e5418f9e1f1765953689d';
+    var width = window.innerWidth || document.documentElement.clientWidth;
+    if (width < 960) {
+      window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="https://changyan.sohu.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>');
+    } else {
+      var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("https://changyan.sohu.com/upload/changyan.js",function(){window.changyan.api.config({appid:appid,conf:conf})});
+    }
+  });
+  </script>
+  <script src="https://assets.changyan.sohu.com/upload/plugins/plugins.count.js"></script>
+
+</body>
+</html>

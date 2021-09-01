@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"kansiliyundi.github.io","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="ijk安卓和iOS的编译过程大同小异,只要搞清楚配置文件的规则都是一样的，本文以iOS为例  拉代码123git clone https:&#x2F;&#x2F;github.com&#x2F;Bilibili&#x2F;ijkplayer.git ijkplayer-ios# 进入代码所在文件夹cd ijkplayer-ios">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ijkpalyer编译集成">
+<meta property="og:url" content="https://kansiliyundi.github.io/2020/03/10/ijkPlayer%E7%BC%96%E8%AF%91%E9%9B%86%E6%88%90/index.html">
+<meta property="og:site_name" content="九月.">
+<meta property="og:description" content="ijk安卓和iOS的编译过程大同小异,只要搞清楚配置文件的规则都是一样的，本文以iOS为例  拉代码123git clone https:&#x2F;&#x2F;github.com&#x2F;Bilibili&#x2F;ijkplayer.git ijkplayer-ios# 进入代码所在文件夹cd ijkplayer-ios">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-03-10T04:24:55.000Z">
+<meta property="article:modified_time" content="2021-07-12T07:16:54.439Z">
+<meta property="article:author" content="九月.">
+<meta property="article:tag" content="iOS">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://kansiliyundi.github.io/2020/03/10/ijkPlayer%E7%BC%96%E8%AF%91%E9%9B%86%E6%88%90/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>ijkpalyer编译集成 | 九月.</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">九月.</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">just a smelly programmer.</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://kansiliyundi.github.io/2020/03/10/ijkPlayer%E7%BC%96%E8%AF%91%E9%9B%86%E6%88%90/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="九月.">
+      <meta itemprop="description" content="just a smelly programmer.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="九月.">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          ijkpalyer编译集成
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-03-10 12:24:55" itemprop="dateCreated datePublished" datetime="2020-03-10T12:24:55+08:00">2020-03-10</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-07-12 15:16:54" itemprop="dateModified" datetime="2021-07-12T15:16:54+08:00">2021-07-12</time>
+              </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Changyan：</span>
+    
+    
+      <a title="changyan" href="/2020/03/10/ijkPlayer%E7%BC%96%E8%AF%91%E9%9B%86%E6%88%90/#SOHUCS" itemprop="discussionUrl">
+        <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="2020/03/10/ijkPlayer编译集成/" itemprop="commentCount"></span>
+      </a>
+    
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <blockquote>
+<p>ijk安卓和iOS的编译过程大同小异,只要搞清楚配置文件的规则都是一样的，本文以iOS为例</p>
+</blockquote>
+<h2 id="拉代码"><a href="#拉代码" class="headerlink" title="拉代码"></a>拉代码</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git clone https://github.com/Bilibili/ijkplayer.git ijkplayer-ios</span><br><span class="line"># 进入代码所在文件夹</span><br><span class="line">cd ijkplayer-ios</span><br></pre></td></tr></table></figure>
+<span id="more"></span> 
+<h2 id="文件说明"><a href="#文件说明" class="headerlink" title="文件说明"></a>文件说明</h2><h3 id="关键文件说明："><a href="#关键文件说明：" class="headerlink" title="关键文件说明："></a>关键文件说明：</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"># 初始化ios源码的脚本</span><br><span class="line">ijkplayer-ios/init-ios.sh</span><br><span class="line"># 初始化ios HTTPS支持的脚本</span><br><span class="line">ijkplayer-ios/init-ios-openssl.sh</span><br><span class="line"></span><br><span class="line"># 对应着ijkplayer在ios平台的源码</span><br><span class="line">ijkplayer-ios/ios</span><br><span class="line">./compile-ffmpeg.sh 编译ffmpeg脚本</span><br><span class="line">./compile-openssl.sh 编译https支持脚本</span><br><span class="line"># 执行以上脚本编译完成后的产物</span><br><span class="line">ijkplayer-ios/ios/build</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"># 配置解码器配置文件所在的文件夹 </span><br><span class="line">ijkplayer-ios/config</span><br><span class="line">./module-default.sh 更多的编解码器/格式</span><br><span class="line">./module-lite-hevc.sh 较少的编解码器/格式(包括hevc)</span><br><span class="line">./module-lite.sh 较少的编解码器/格式(默认情况)</span><br><span class="line">./module.sh 软连接以上三个其中一个 软连接方法 ln -s module-lite.sh module.sh</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h3 id="编辑配置说明："><a href="#编辑配置说明：" class="headerlink" title="编辑配置说明："></a>编辑配置说明：</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">#修改框架支持的arm指令集架构</span><br><span class="line">ijkplayer-ios/init-ios.sh 中找到FF_ALL_ARCHS_IOS8_SDK字段,保留自己想要的架构</span><br><span class="line">jkplayer-ios/init-ios-openssl.sh 同上</span><br><span class="line">ijkplayer-ios/ios/compile-ffmpeg.sh 同上</span><br><span class="line">ijkplayer-ios/ios/compile-openssl.sh 同上</span><br><span class="line"></span><br><span class="line"># arm指令集说明</span><br><span class="line">模拟器32位处理器测试需要i386架构，（iphone5,iphone5s以下的模拟器）</span><br><span class="line">模拟器64位处理器测试需要x86_64架构，(iphone6以上的模拟器)</span><br><span class="line">真机32位处理器需要armv7,或者armv7s架构，（iphone4真机/armv7,      ipnone5,iphone5s真机/armv7s）</span><br><span class="line">真机64位处理器需要arm64架构。(iphone6,iphone6p以上的真机)</span><br></pre></td></tr></table></figure>
+
+<h2 id="编译步骤"><a href="#编译步骤" class="headerlink" title="编译步骤"></a>编译步骤</h2><h3 id="初始化源码"><a href="#初始化源码" class="headerlink" title="初始化源码"></a>初始化源码</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># 编辑配置</span><br><span class="line">修改ijkplayer-ios/init-ios.sh支持的架构,修改方式看编辑配置一节</span><br><span class="line">执行ijkplayer-ios/init-ios.sh</span><br></pre></td></tr></table></figure>
+<h3 id="HTTPS支持"><a href="#HTTPS支持" class="headerlink" title="HTTPS支持"></a>HTTPS支持</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">如需支持HTTPS播放,需要执行ijkplayer-ios/init-ios-openssl.sh脚本初始化openssl源码</span><br><span class="line"># 编辑配置</span><br><span class="line">修改jkplayer-ios/init-ios-openssl.sh支持的架构,修改方式看编辑配置说明一节</span><br><span class="line">   </span><br><span class="line"># 在解码器配置文件中添加一行配置</span><br><span class="line">export COMMON_FF_CFG_FLAGS=&quot;$COMMON_FF_CFG_FLAGS --enable-openssl&quot;</span><br><span class="line"></span><br><span class="line">执行ijkplayer-ios/init-ios-openssl.sh</span><br></pre></td></tr></table></figure>
+
+<h3 id="编译"><a href="#编译" class="headerlink" title="编译"></a>编译</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">cd ios</span><br><span class="line"># 编辑配置 修改支持的架构,修改方式看编辑配置说明一节</span><br><span class="line">./compile-ffmpeg.sh </span><br><span class="line">./compile-openssl.sh</span><br><span class="line"></span><br><span class="line">编译openssl, 如果不需要https可以跳过这一步</span><br><span class="line"># 清理上次编译的产物</span><br><span class="line">./compile-openssl.sh clean</span><br><span class="line"># 编译openssl</span><br><span class="line">./compile-openssl.sh all</span><br><span class="line"></span><br><span class="line">编译ffmpeg</span><br><span class="line"># 清理上次编译的产物</span><br><span class="line">./compile-ffmpeg.sh clean</span><br><span class="line"># 编译ffmpeg</span><br><span class="line">./compile-ffmpeg.sh all </span><br></pre></td></tr></table></figure>
+
+<h3 id="添加支持库"><a href="#添加支持库" class="headerlink" title="添加支持库"></a>添加支持库</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">如果执行了openssl编译,需要手动添加openssl的支持库</span><br><span class="line">打开ijkplayer-ios/ios/IJKMediaPlayer/IJKMediaPlayer.xcodeproj</span><br><span class="line">target-&gt;IJKMediaFramework-&gt;General-&gt;Frameworks and Libraries-&gt;添加-&gt;Add Other...</span><br><span class="line">找到ijkplayer-ios/ios/build/universal/lib下的libcrypto.a 和libssl.a添加</span><br></pre></td></tr></table></figure>
+
+<h3 id="合并动态库"><a href="#合并动态库" class="headerlink" title="合并动态库"></a>合并动态库</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">修改Edit scheme -&gt; Run -&gt; Build Configuration为Release</span><br><span class="line">分别选择模拟器和真机执行build</span><br><span class="line">然后就可以在项目目录的Products文件夹下看到编译好的.framework库,show in finder</span><br><span class="line">可以看到上一级有Release-iphoneos和Release-iphonesimulator两个文件夹，对应真机和模拟器</span><br><span class="line">合并两个文件夹下的IJKMediaFramework.framework/IJKMediaFramework 为一个</span><br><span class="line">lipo -create 真机framework路径 模拟器framework路径 -output 合并的文件路径</span><br><span class="line">lipo -create Release-iphoneos/IJKMediaFramework.framework/IJKMediaFramework Release-iphonesimulator/IJKMediaFramework.framework/IJKMediaFramework -output IJKMediaFramework</span><br><span class="line"></span><br><span class="line">执行后的IJKMediaFramework替换到原来的两个文件夹中即可</span><br></pre></td></tr></table></figure>
+
+<h3 id="拖入项目"><a href="#拖入项目" class="headerlink" title="拖入项目"></a>拖入项目</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">将Release-iphoneos/IJKMediaFramework.framework文件拖入自己项目的Framework文件夹，至此ijkplayer的编译以及导入全部完成</span><br></pre></td></tr></table></figure>
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div>坚持技术分享，感谢支持!</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.jpg" alt="九月. 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.jpg" alt="九月. 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/iOS/" rel="tag"># iOS</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2018/04/19/iOS%20Crash%20Hook/" rel="prev" title="iOS Crash Hook">
+      <i class="fa fa-chevron-left"></i> iOS Crash Hook
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/04/21/%E4%BD%BF%E7%94%A8Geth%E6%90%AD%E5%BB%BAETH%E8%8A%82%E7%82%B9%E6%9C%8D%E5%8A%A1%E5%99%A8/" rel="next" title="使用Geth搭建eth钱包节点服务器(一次在ETH主网被攻击后的实验)">
+      使用Geth搭建eth钱包节点服务器(一次在ETH主网被攻击后的实验) <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="SOHUCS"></div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8B%89%E4%BB%A3%E7%A0%81"><span class="nav-number">1.</span> <span class="nav-text">拉代码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E8%AF%B4%E6%98%8E"><span class="nav-number">2.</span> <span class="nav-text">文件说明</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B3%E9%94%AE%E6%96%87%E4%BB%B6%E8%AF%B4%E6%98%8E%EF%BC%9A"><span class="nav-number">2.1.</span> <span class="nav-text">关键文件说明：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BC%96%E8%BE%91%E9%85%8D%E7%BD%AE%E8%AF%B4%E6%98%8E%EF%BC%9A"><span class="nav-number">2.2.</span> <span class="nav-text">编辑配置说明：</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BC%96%E8%AF%91%E6%AD%A5%E9%AA%A4"><span class="nav-number">3.</span> <span class="nav-text">编译步骤</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%9D%E5%A7%8B%E5%8C%96%E6%BA%90%E7%A0%81"><span class="nav-number">3.1.</span> <span class="nav-text">初始化源码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#HTTPS%E6%94%AF%E6%8C%81"><span class="nav-number">3.2.</span> <span class="nav-text">HTTPS支持</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BC%96%E8%AF%91"><span class="nav-number">3.3.</span> <span class="nav-text">编译</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B7%BB%E5%8A%A0%E6%94%AF%E6%8C%81%E5%BA%93"><span class="nav-number">3.4.</span> <span class="nav-text">添加支持库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%90%88%E5%B9%B6%E5%8A%A8%E6%80%81%E5%BA%93"><span class="nav-number">3.5.</span> <span class="nav-text">合并动态库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8B%96%E5%85%A5%E9%A1%B9%E7%9B%AE"><span class="nav-number">3.6.</span> <span class="nav-text">拖入项目</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">九月.</p>
+  <div class="site-description" itemprop="description">just a smelly programmer.</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">10</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2016 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">九月.</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  <script>
+  NexT.utils.loadComments(document.querySelector('#SOHUCS'), () => {
+    var appid = 'cyteaOKpb';
+    var conf = '5d2d2278579e5418f9e1f1765953689d';
+    var width = window.innerWidth || document.documentElement.clientWidth;
+    if (width < 960) {
+      window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="https://changyan.sohu.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>');
+    } else {
+      var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("https://changyan.sohu.com/upload/changyan.js",function(){window.changyan.api.config({appid:appid,conf:conf})});
+    }
+  });
+  </script>
+  <script src="https://assets.changyan.sohu.com/upload/plugins/plugins.count.js"></script>
+
+</body>
+</html>

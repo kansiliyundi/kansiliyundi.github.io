@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"kansiliyundi.github.io","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="最近鼓捣服务器玩脱了,导致ssh连不上,端口也没占用,防火墙也没开,就是不行,索性直接重装,正好趁这个机会把以前没有写下的东西记录下来  什么是锐速锐速serverspeeder是一款TCP网络加速软件，能在Linux系统和Windows系统的服务器中安装，安装后能启到提高网络连接稳定性、带宽利用率、低访问失败率等作用，从而提高服务器网络访问速度。锐速并非实际增大服务器带宽，只是提高网络的稳定性">
+<meta property="og:type" content="article">
+<meta property="og:title" content="给centOS安装锐速">
+<meta property="og:url" content="https://kansiliyundi.github.io/2016/12/25/%E7%BB%99centOS%E5%AE%89%E8%A3%85%E9%94%90%E9%80%9F/index.html">
+<meta property="og:site_name" content="九月.">
+<meta property="og:description" content="最近鼓捣服务器玩脱了,导致ssh连不上,端口也没占用,防火墙也没开,就是不行,索性直接重装,正好趁这个机会把以前没有写下的东西记录下来  什么是锐速锐速serverspeeder是一款TCP网络加速软件，能在Linux系统和Windows系统的服务器中安装，安装后能启到提高网络连接稳定性、带宽利用率、低访问失败率等作用，从而提高服务器网络访问速度。锐速并非实际增大服务器带宽，只是提高网络的稳定性">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2016-12-25T03:53:56.000Z">
+<meta property="article:modified_time" content="2021-07-12T07:17:26.295Z">
+<meta property="article:author" content="九月.">
+<meta property="article:tag" content="ss,vps">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://kansiliyundi.github.io/2016/12/25/%E7%BB%99centOS%E5%AE%89%E8%A3%85%E9%94%90%E9%80%9F/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>给centOS安装锐速 | 九月.</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">九月.</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">just a smelly programmer.</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://kansiliyundi.github.io/2016/12/25/%E7%BB%99centOS%E5%AE%89%E8%A3%85%E9%94%90%E9%80%9F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="九月.">
+      <meta itemprop="description" content="just a smelly programmer.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="九月.">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          给centOS安装锐速
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2016-12-25 11:53:56" itemprop="dateCreated datePublished" datetime="2016-12-25T11:53:56+08:00">2016-12-25</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-07-12 15:17:26" itemprop="dateModified" datetime="2021-07-12T15:17:26+08:00">2021-07-12</time>
+              </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Changyan：</span>
+    
+    
+      <a title="changyan" href="/2016/12/25/%E7%BB%99centOS%E5%AE%89%E8%A3%85%E9%94%90%E9%80%9F/#SOHUCS" itemprop="discussionUrl">
+        <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="2016/12/25/给centOS安装锐速/" itemprop="commentCount"></span>
+      </a>
+    
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <blockquote>
+<p>最近鼓捣服务器玩脱了,导致ssh连不上,端口也没占用,防火墙也没开,就是不行,索性直接重装,正好趁这个机会把以前没有写下的东西记录下来</p>
+</blockquote>
+<h2 id="什么是锐速"><a href="#什么是锐速" class="headerlink" title="什么是锐速"></a>什么是锐速</h2><p>锐速serverspeeder是一款TCP网络加速软件，能在Linux系统和Windows系统的服务器中安装，安装后能启到提高网络连接稳定性、带宽利用率、低访问失败率等作用，从而提高服务器网络访问速度。锐速并非实际增大服务器带宽，只是提高网络的稳定性和利用率而已。蜗牛在为服务器安装锐速后，测试服务器全球下载、本地上传下载速度变化不大；但使用超级ping发现，丢包现象明显减少。另外一个明显变化就是在同一VPS安装科学上网工具观看YouTube，没安装锐速前观看YouTube 720P视频非常不流畅，经常会出现缓冲现象；而安装锐速后能流畅观看YouTube 720P视频。</p>
+<span id="more"></span> 
+<h2 id="安装锐速"><a href="#安装锐速" class="headerlink" title="安装锐速"></a>安装锐速</h2><p>这里使用网上找到的脚本 直接copy以下命令</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">#如果没有安装wget下载工具,执行这一条进行安装</span><br><span class="line">$ yum -y install wget</span><br><span class="line"></span><br><span class="line">#下载脚本</span><br><span class="line">$ wget -N --no-check-certificate https://raw.githubusercontent.com/wn789/serverspeeder/master/serverspeeder.sh</span><br><span class="line"></span><br><span class="line">#执行脚本</span><br><span class="line">$ bash serverspeeder.sh</span><br></pre></td></tr></table></figure>
+<p>安装过程很简单，如果你的VPS内核支持安装，根本无需你手动操作，直接一键完成。</p>
+<p>如果你VPS内核没有找到匹配的锐速版本，会自动提示选择接近版本。</p>
+<p>当然你还肯会遇到内核不支持的情况，那么需要我们先手动更改可以匹配锐速的内核。目前此破解版锐速支持的内核有：</p>
+<ul>
+<li>CentOS-6.8：2.6.32-642.el7.x86_64</li>
+<li>CentOS-7.2：3.10.0-327.el7.x86_64</li>
+<li>CentOS：4.4.0-x86_64-linode63</li>
+<li>Ubuntu_14.04：4.2.0-35-generic</li>
+<li>Debian_8：3.16.0-4-amd64。</li>
+</ul>
+<p>替换内核的方法请看下面:<br><a href="#%E6%9B%BF%E6%8D%A2%E5%86%85%E6%A0%B8">为你的CentOS替换内核</a></p>
+<h3 id="锐速serverspeeder常用命令"><a href="#锐速serverspeeder常用命令" class="headerlink" title="锐速serverspeeder常用命令:"></a>锐速serverspeeder常用命令:</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">service serverSpeeder start #启动</span><br><span class="line">service serverSpeeder stop #停止</span><br><span class="line">service serverSpeeder reload #重新加载配置</span><br><span class="line">service serverSpeeder restart #重启</span><br><span class="line">service serverSpeeder status #状态</span><br><span class="line">service serverSpeeder stats #统计</span><br><span class="line">service serverSpeeder renewLic #更新许可文件</span><br><span class="line">service serverSpeeder update #更新</span><br><span class="line">chattr -i /serverspeeder/etc/apx* &amp;&amp; /serverspeeder/bin/serverSpeeder.sh uninstall -f #卸载</span><br></pre></td></tr></table></figure>
+<p><span id = "替换内核"></span></p>
+<h2 id="为你的CentOS替换内核"><a href="#为你的CentOS替换内核" class="headerlink" title="为你的CentOS替换内核"></a>为你的CentOS替换内核</h2><h4 id="根据系统版本更换内核"><a href="#根据系统版本更换内核" class="headerlink" title="根据系统版本更换内核"></a>根据系统版本更换内核</h4><p>查看自己的系统版本</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">head -n 1 /etc/issue</span><br></pre></td></tr></table></figure>
+<h5 id="CentOS-6-8"><a href="#CentOS-6-8" class="headerlink" title="CentOS 6.8"></a>CentOS 6.8</h5><p>CentOS 6支持安装锐速的内核：<br>2.6.32-504.3.3.el6.x86_64</p>
+<p>首先运行下面命令为自己的VPS下载安装内核。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">#查看当前内核版本</span><br><span class="line">uname -r</span><br><span class="line">#下载内核</span><br><span class="line">wget http://ftp.scientificlinux.org/linux/scientific/6.6/x86_64/updates/security/kernel-2.6.32-504.3.3.el6.x86_64.rpm</span><br><span class="line">#安装内核</span><br><span class="line">rpm -ivh kernel-2.6.32-504.3.3.el6.x86_64.rpm --force</span><br></pre></td></tr></table></figure>
+<h5 id="CentOS-7"><a href="#CentOS-7" class="headerlink" title="CentOS 7"></a>CentOS 7</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">#查看当前内核版本</span><br><span class="line">uname -r</span><br><span class="line">#下载内核</span><br><span class="line">wget http://ftp.scientificlinux.org/linux/scientific/7.0/x86_64/updates/security/kernel-3.10.0-327.el7.x86_64.rpm</span><br><span class="line">#安装内核</span><br><span class="line">rpm -ivh kernel-3.10.0-327.el7.x86_64.rpm --force</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>正常系统执行到这里就可以使用”reboot”命令重启,然后”uname -r”查看是否替换成功了,但是我的vps服务商是linode,原本没问题,这次更换内核发现,安装成功后怎么也无法默认启动这个内核,reboot之后还是原来的内核,如果你也有这样的问题,请接着下面的操作</p>
+</blockquote>
+<h4 id="linode调整默认启动内核"><a href="#linode调整默认启动内核" class="headerlink" title="linode调整默认启动内核"></a>linode调整默认启动内核</h4><p>Linode 的机器全部用的是定制的内核,并且在控制台强制限制了机器默认启动的内核,所以需要做一些其他工作</p>
+<h5 id="更新系统"><a href="#更新系统" class="headerlink" title="更新系统"></a>更新系统</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">#更新系统,目前会更新到6.9</span><br><span class="line">$ yum install epel-release -y</span><br><span class="line">#更新yum</span><br><span class="line">$ yum update -y</span><br></pre></td></tr></table></figure>
+<h5 id="安装-grub-引导"><a href="#安装-grub-引导" class="headerlink" title="安装 grub 引导"></a>安装 grub 引导</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ yum install grub -y</span><br></pre></td></tr></table></figure>
+<h5 id="新建-menu-lst-引导文件"><a href="#新建-menu-lst-引导文件" class="headerlink" title="新建 menu.lst 引导文件"></a>新建 menu.lst 引导文件</h5><p>先看看你机器安装的最新内核是什么</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ls -l /boot</span><br></pre></td></tr></table></figure>
+<p>会显示一大堆东西</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">总用量 98992</span><br><span class="line">-rw-r--r--. 1 root root   106312 12月 16 2014 config-2.6.32-504.3.3.el6.x86_64</span><br><span class="line">-rw-r--r--. 1 root root   108108 2月  24 2017 config-2.6.32-642.15.1.el6.x86_64</span><br><span class="line">-rw-r--r--. 1 root root   108103 5月  10 2016 config-2.6.32-642.el6.x86_64</span><br><span class="line">-rw-r--r--. 1 root root   108169 10月  5 21:27 config-2.6.32-696.13.2.el6.x86_64</span><br><span class="line">drwxr-xr-x. 3 root root     4096 3月   1 2017 efi</span><br><span class="line">drwxr-xr-x. 2 root root     4096 10月 12 09:46 grub</span><br><span class="line">-rw-------. 1 root root 17532160 10月 12 09:43 initramfs-2.6.32-504.3.3.el6.x86_64.img</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>显而易见我们要的是2.6.32-504.3.3.el6.x86_64的内核</p>
+<p>输入命令</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ nano /boot/grub/menu.lst</span><br></pre></td></tr></table></figure>
+<p>然后按照下面的格式填写menu.lst中的内容模版,每行的版本号替换成你系统安装的内核版本</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">default 0</span><br><span class="line">timeout 5</span><br><span class="line"></span><br><span class="line">title CentOS 2.6.32-504.3.3.el6.x86_64</span><br><span class="line"></span><br><span class="line">root (hd0)</span><br><span class="line"></span><br><span class="line">kernel /boot/vmlinuz2.6.32-504.3.3.el6.x86_64 root=/dev/sda</span><br><span class="line"></span><br><span class="line">initrd /boot/initramfs-2.6.32-504.3.3.el6.x86_64.img</span><br></pre></td></tr></table></figure>
+<p>如果文件已存在,有多个title时,说明你有安装多个内核,找到对应可用的内核,或者新添加一个,将default改为你需要的顺序即可,default的意思是系统默认启动第几个title</p>
+<h5 id="Linode-控制面板修改启动方式"><a href="#Linode-控制面板修改启动方式" class="headerlink" title="Linode 控制面板修改启动方式"></a>Linode 控制面板修改启动方式</h5><p>对应 VPS 的系统盘 Edit 下的 Kernel 选择 【GRUB(Legacy)】保存后，Reboot</p>
+<h5 id="启动后，验证内核"><a href="#启动后，验证内核" class="headerlink" title="启动后，验证内核"></a>启动后，验证内核</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ uname -a</span><br></pre></td></tr></table></figure>
+
+<p>执行命令“rpm -qa | grep kernel”，查看内核是否安装成功。如果显示你安装的内核版本，表示安装成功。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rpm -qa | grep kernel</span><br></pre></td></tr></table></figure>
+
+<p>重启VPS，查看内核是否修改成功。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">reboot #重启VPS</span><br><span class="line">uname -r #当前使用内核版本</span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div>坚持技术分享，感谢支持!</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.jpg" alt="九月. 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.jpg" alt="九月. 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/ss-vps/" rel="tag"># ss,vps</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2016/12/21/%E7%A8%8B%E5%BA%8F%E5%91%98%E5%BF%85%E5%A4%87%E7%9A%84%E7%BF%BB%E5%A2%99%E5%A7%BF%E5%8A%BF/" rel="prev" title="程序员必备的翻墙姿势+ss搭建vps服务器">
+      <i class="fa fa-chevron-left"></i> 程序员必备的翻墙姿势+ss搭建vps服务器
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2017/01/05/%E4%B8%AD%E5%B0%8F%E5%9E%8B%E7%A7%BB%E5%8A%A8%E7%AB%AF%E5%B7%A5%E7%A8%8B%E7%BB%93%E6%9E%84%E6%80%BB%E7%BB%93/" rel="next" title="中小型移动端工程结构总结">
+      中小型移动端工程结构总结 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="SOHUCS"></div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E9%94%90%E9%80%9F"><span class="nav-number">1.</span> <span class="nav-text">什么是锐速</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85%E9%94%90%E9%80%9F"><span class="nav-number">2.</span> <span class="nav-text">安装锐速</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%94%90%E9%80%9Fserverspeeder%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4"><span class="nav-number">2.1.</span> <span class="nav-text">锐速serverspeeder常用命令:</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%BA%E4%BD%A0%E7%9A%84CentOS%E6%9B%BF%E6%8D%A2%E5%86%85%E6%A0%B8"><span class="nav-number">3.</span> <span class="nav-text">为你的CentOS替换内核</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%A0%B9%E6%8D%AE%E7%B3%BB%E7%BB%9F%E7%89%88%E6%9C%AC%E6%9B%B4%E6%8D%A2%E5%86%85%E6%A0%B8"><span class="nav-number">3.0.1.</span> <span class="nav-text">根据系统版本更换内核</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#CentOS-6-8"><span class="nav-number">3.0.1.1.</span> <span class="nav-text">CentOS 6.8</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#CentOS-7"><span class="nav-number">3.0.1.2.</span> <span class="nav-text">CentOS 7</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#linode%E8%B0%83%E6%95%B4%E9%BB%98%E8%AE%A4%E5%90%AF%E5%8A%A8%E5%86%85%E6%A0%B8"><span class="nav-number">3.0.2.</span> <span class="nav-text">linode调整默认启动内核</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%9B%B4%E6%96%B0%E7%B3%BB%E7%BB%9F"><span class="nav-number">3.0.2.1.</span> <span class="nav-text">更新系统</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%AE%89%E8%A3%85-grub-%E5%BC%95%E5%AF%BC"><span class="nav-number">3.0.2.2.</span> <span class="nav-text">安装 grub 引导</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%96%B0%E5%BB%BA-menu-lst-%E5%BC%95%E5%AF%BC%E6%96%87%E4%BB%B6"><span class="nav-number">3.0.2.3.</span> <span class="nav-text">新建 menu.lst 引导文件</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Linode-%E6%8E%A7%E5%88%B6%E9%9D%A2%E6%9D%BF%E4%BF%AE%E6%94%B9%E5%90%AF%E5%8A%A8%E6%96%B9%E5%BC%8F"><span class="nav-number">3.0.2.4.</span> <span class="nav-text">Linode 控制面板修改启动方式</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%90%AF%E5%8A%A8%E5%90%8E%EF%BC%8C%E9%AA%8C%E8%AF%81%E5%86%85%E6%A0%B8"><span class="nav-number">3.0.2.5.</span> <span class="nav-text">启动后，验证内核</span></a></li></ol></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">九月.</p>
+  <div class="site-description" itemprop="description">just a smelly programmer.</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">10</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2016 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">九月.</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  <script>
+  NexT.utils.loadComments(document.querySelector('#SOHUCS'), () => {
+    var appid = 'cyteaOKpb';
+    var conf = '5d2d2278579e5418f9e1f1765953689d';
+    var width = window.innerWidth || document.documentElement.clientWidth;
+    if (width < 960) {
+      window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="https://changyan.sohu.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>');
+    } else {
+      var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("https://changyan.sohu.com/upload/changyan.js",function(){window.changyan.api.config({appid:appid,conf:conf})});
+    }
+  });
+  </script>
+  <script src="https://assets.changyan.sohu.com/upload/plugins/plugins.count.js"></script>
+
+</body>
+</html>
